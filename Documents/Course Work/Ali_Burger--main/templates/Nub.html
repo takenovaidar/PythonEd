@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main_css/Hub.css') }}">
+    <title>Gift Shop Admin</title>
+</head>
+<body>
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-gift'></i>
+            <span class="text">Gift Shop Admin</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="{{ url_for('home') }}">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-gift'></i>
+                    <span class="text">Products</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-category'></i>
+                    <span class="text">Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('wishlist') }}">
+                    <i class='bx bxs-shopping-bags'></i>
+                    <span class="text">Orders</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-user-detail'></i>
+                    <span class="text">Customers</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="{{ url_for('profile') }}">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('logout') }}" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <section id="content">
+        <nav>
+            <i class='bx bx-menu'></i>
+            <a href="#" class="nav-link">Categories</a>
+            <form action="{{ url_for('search') }}" method="get">
+                <div class="form-input">
+                    <input type="search" name="query" placeholder="Search products...">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="{{ url_for('wishlist') }}" class="notification">
+                <i class='bx bxs-bell'></i>
+                <span class="num">8</span>
+            </a>
+            <a href="#" class="profile">
+                <img src='{{ current_user.avatar_url }}' alt="Profile Picture">
+            </a>
+        </nav>
+
+        <main>
+            <div class="profile-container">
+              <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src='{{ current_user.avatar_url }}' alt="Profile Picture">
+                </div>
+                <div class="profile-info">
+                  <h1> {{ current_user.username }}</h1>
+                  <p class="username">{{ current_user.email }}</p>
+                  <p class="bio">{{ current_user.bio or '' }}</p>
+                  <div class="profile-stats">
+                    <div class="stat">
+                      <span class="stat-number">{{ current_user.date_of_birth.strftime('%Y-%m-%d') if current_user.date_of_birth else '' }}</span>
+                      <span class="stat-label">Birthday</span>
+                    </div>
+                    <div class="stat">
+                      <span class="stat-number">{{ current_user.gender }}</span>
+                      <span class="stat-label">Gender</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="profile-posts">
+                <h2>Recent Goods</h2>
+                <div class="posts-grid">
+                  {% for gift in gifts[:3] %}
+                  <div class="post">
+                    <a href="{{ url_for('gift_detail', gift_id=gift['id']) }}" target="_blank" style="text-decoration: none; color: inherit;">
+                      <img src="{{ url_for('static', filename='images/' + gift['image']) }}" alt="{{ gift['name'] }}">
+                      <div class="post-info">
+                        <h3>{{ gift['name'] }}</h3>
+                        <p>{{ gift['description'] }}</p>
+                        <p><strong>{{ gift['price'] }} сом</strong></p>
+                        <span class="post-date">{{ gift['store_name'] }}</span>
+                      </div>
+                    </a>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              
+              
+                </div>
+              </div>
+            </div>
+          </main>
+    </section>
+
+    <script src="{{ url_for('static', filename='mode.js/Nub.js') }}"></script>
+</body>
+</html>
